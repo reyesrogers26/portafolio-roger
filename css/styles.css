@@ -269,3 +269,73 @@ html.light .badge-tag {
 .radar-dot {
   animation: radar-ping 2s infinite;
 }
+
+/* ==========================================================================
+   MODO CLARO (DÍA) - AJUSTES DEL TEMA
+   Las clases fijas oscuras de Tailwind (slate-*) pisan las variables CSS
+   del modo claro; estas reglas las corrigen cuando <html> tiene .light.
+   ========================================================================== */
+
+html.light body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-main) !important;
+}
+
+html.light [class*="bg-slate-950"] {
+  background-color: #f8fafc !important;
+}
+
+html.light [class*="bg-slate-900"] {
+  background-color: #f1f5f9 !important;
+}
+
+html.light [class*="bg-slate-800"] {
+  background-color: #e2e8f0 !important;
+}
+
+html.light [class*="bg-slate-700"] {
+  background-color: #cbd5e1 !important;
+}
+
+html.light [class*="text-slate-100"],
+html.light [class*="text-slate-200"] {
+  color: #0f172a !important;
+}
+
+html.light [class*="text-slate-300"] {
+  color: #1e293b !important;
+}
+
+html.light [class*="text-slate-400"] {
+  color: #475569 !important;
+}
+
+html.light [class*="text-slate-500"] {
+  color: #64748b !important;
+}
+
+html.light [class*="text-emerald-400"] {
+  color: #059669 !important;
+}
+
+html.light [class*="text-emerald-300"] {
+  color: #047857 !important;
+}
+
+html.light [class*="border-slate-"] {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .border-slate-950 {
+  border-color: #0b1329 !important;
+}
+
+/* En modo claro los bordes de los botones emerald siguen igual */
+html.light .glass-panel {
+  background: var(--bg-card) !important;
+}
+
+html.light .filter-btn:hover {
+  border-color: rgba(0, 0, 0, 0.2) !important;
+  color: var(--text-main) !important;
+}
