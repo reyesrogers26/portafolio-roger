@@ -1,0 +1,16 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Sanity Studio
+studio/dist/
+studio/.sanity/
+studio/.env
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Cache del navegador / sistema
+Thumbs.db

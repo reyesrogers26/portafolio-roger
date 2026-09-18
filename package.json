@@ -1,0 +1,15 @@
+{
+  "name": "portafolio-roger",
+  "version": "2.0.0",
+  "description": "Portafolio Profesional de Roger Joel Ramirez Reyes - Dinámico con Sanity CMS",
+  "type": "module",
+  "scripts": {
+    "studio": "npm --prefix studio run dev",
+    "studio:deploy": "npm --prefix studio run deploy",
+    "studio:seed": "npm --prefix studio run seed",
+    "studio:install": "npm --prefix studio install"
+  },
+  "keywords": ["portafolio", "sanity", "cms", "ventas", "emprendimiento"],
+  "license": "MIT",
+  "private": true
+}

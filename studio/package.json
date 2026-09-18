@@ -1,0 +1,27 @@
+{
+  "name": "portafolio-roger-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "seed": "node seeds/import.mjs",
+    "generate-seed": "node seeds/generateSeed.mjs"
+  },
+  "keywords": ["sanity", "cms", "portafolio"],
+  "dependencies": {
+    "@sanity/client": "^8.6.2",
+    "@sanity/vision": "^6.15.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "^6.15.0",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@sanity/types": "^6.15.0",
+    "typescript": "^5.6.3"
+  }
+}
