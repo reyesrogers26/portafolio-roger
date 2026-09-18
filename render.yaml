@@ -1,0 +1,11 @@
+# Render Blueprint - Portafolio estático
+# Fuerza el despliegue como Static Site (sin servidor Node).
+# Si tu servicio actual es un Web Service con "Application exited early",
+# bórralo y en su lugar: New + → Static Site (o importa este Blueprint).
+services:
+  - type: web
+    runtime: static
+    name: portafolio-roger
+    repo: https://github.com/reyesrogers26/portafolio-roger
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
