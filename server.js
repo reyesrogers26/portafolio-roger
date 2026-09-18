@@ -1,82 +1,58 @@
-import http from 'http';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { createServer } from 'node:http';
+import { readFile } from 'node:fs/promises';
+import { extname, join, normalize, resolve, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const ROOT = resolve(__dirname);
+const PORT = process.env.PORT || 3333;
 
-const PORT = process.env.PORT || 3000;
-
-const MIME_TYPES = {
+const MIME = {
   '.html': 'text/html; charset=utf-8',
+  '.htm': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
-  '.mjs': 'application/javascript; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.gif': 'image/gif',
+  '.webp': 'image/webp',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
-  '.webp': 'image/webp',
+  '.pdf': 'application/pdf',
+  '.txt': 'text/plain; charset=utf-8',
+  '.md': 'text/markdown; charset=utf-8',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
   '.ttf': 'font/ttf',
-  '.md': 'text/markdown; charset=utf-8'
 };
 
-const server = http.createServer((req, res) => {
-  // Manejo de URL y sanitización de ruta
-  let reqPath = decodeURIComponent(req.url.split('?')[0]);
-  if (reqPath === '/' || reqPath === '') {
-    reqPath = '/index.html';
-  }
+createServer(async (req, res) => {
+  try {
+    let urlPath = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
 
-  const filePath = path.normalize(path.join(__dirname, reqPath));
+    if (urlPath === '/' || urlPath === '') {
+      urlPath = '/index.html';
+    }
 
-  // Seguridad: evitar path traversal fuera del directorio raíz
-  if (!filePath.startsWith(__dirname)) {
-    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('403 Prohibido');
-    return;
-  }
+    const filePath = resolve(join(ROOT, normalize(urlPath)));
 
-  fs.stat(filePath, (err, stats) => {
-    if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-      res.end('<h1>404 No encontrado</h1><p><a href="/">Volver al portafolio</a></p>');
+    if (filePath !== ROOT && !filePath.startsWith(ROOT + sep)) {
+      res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('403 Forbidden');
       return;
     }
 
-    let targetFile = filePath;
-    if (stats.isDirectory()) {
-      targetFile = path.join(filePath, 'index.html');
-    }
-
-    const ext = path.extname(targetFile).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-
-    fs.readFile(targetFile, (readErr, content) => {
-      if (readErr) {
-        res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-        res.end('Error interno del servidor');
-        return;
-      }
-
-      res.writeHead(200, {
-        'Content-Type': contentType,
-        'Cache-Control': 'no-cache'
-      });
-      res.end(content);
-    });
-  });
-});
-
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`=========================================`);
-  console.log(`🚀 Portafolio en vivo en http://localhost:${PORT}`);
-  console.log(`⚡ Listo para Render, Web Service o ejecución local`);
-  console.log(`=========================================`);
+    const content = await readFile(filePath);
+    const type = MIME[extname(filePath).toLowerCase()] || 'application/octet-stream';
+    res.writeHead(200, { 'Content-Type': type });
+    res.end(content);
+  } catch {
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('404 Not Found');
+  }
+}).listen(PORT, () => {
+  console.log(`Portafolio sirviéndose en el puerto ${PORT}`);
 });
