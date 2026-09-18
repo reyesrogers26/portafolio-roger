@@ -4,6 +4,8 @@
   "description": "Portafolio Profesional de Roger Joel Ramirez Reyes - Dinámico con Sanity CMS",
   "type": "module",
   "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
     "studio": "npm --prefix studio run dev",
     "studio:deploy": "npm --prefix studio run deploy",
     "studio:seed": "npm --prefix studio run seed",
